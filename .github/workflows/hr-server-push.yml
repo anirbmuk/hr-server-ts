@@ -70,19 +70,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-build-hr-server-node-modules-${{ hashFiles('yarn.lock') }}
       - uses: actions/download-artifact@v2
         with:
           name: dist-hr-server-ts
           path: dist
-
-      - name: Deploy hr-server-ts project
-      - uses: actions/download-artifact@v2
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: 'menj-server'
-          heroku_email: 'anirbmuk@live.in'
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
