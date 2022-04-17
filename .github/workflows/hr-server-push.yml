@@ -79,6 +79,8 @@ jobs:
         with:
           name: dist-hr-server-ts
           path: dist
+
+      - name: Deploy hr-server-ts project
       - uses: actions/download-artifact@v2
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
