@@ -22,7 +22,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-ems-node-modules-${{ hashFiles('package-lock.json') }}
+          key: ${{ runner.os }}-build-hr-server-node-modules-${{ hashFiles('yarn.lock') }}
 
       - name: Install node_modules
         if: steps.cache-node-modules-pre.outputs.cache-hit != 'true'
@@ -37,7 +37,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-ems-node-modules-${{ hashFiles('yarn.lock') }}
+          key: ${{ runner.os }}-build-hr-server-node-modules-${{ hashFiles('yarn.lock') }}
 
       - name: Check linting
         run: yarn lint
@@ -54,7 +54,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-ems-node-modules-${{ hashFiles('yarn.lock') }}
+          key: ${{ runner.os }}-build-hr-server-node-modules-${{ hashFiles('yarn.lock') }}
 
       - name: Build HR project
         run: yarn build
