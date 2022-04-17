@@ -58,3 +58,29 @@ jobs:
 
       - name: Build HR project
         run: yarn build
+
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-hr-server-ts
+          path: dist
+
+  deploy:
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-hr-server-node-modules-${{ hashFiles('yarn.lock') }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist-hr-server-ts
+          path: dist
+      - uses: actions/download-artifact@v2
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: 'menj-server'
+          heroku_email: 'anirbmuk@live.in'
