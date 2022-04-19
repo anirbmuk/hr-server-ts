@@ -9,9 +9,8 @@ export const newLocation = {
 
 export const existingLocation = {
   LocationId: 1000,
-  StreetAddress: 'Test',
-  PostalCode: '700000',
-  City: 'Test',
-  StateProvince: 'TT',
-  CountryId: 'IN',
+  StreetAddress: '1297 Via Cola di Rie',
+  PostalCode: '00989',
+  City: 'Roma',
+  CountryId: 'IT',
 }

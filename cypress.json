@@ -8,5 +8,10 @@
   "env": {
     "version": "/api/v1"
   },
-  "testFiles": ["./user.spec.ts", "./location.spec.ts"]
+  "testFiles": [
+    "./user.spec.ts",
+    "./location.spec.ts",
+    "./department.spec.ts",
+    "./employee.spec.ts"
+  ]
 }

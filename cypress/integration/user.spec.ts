@@ -14,13 +14,20 @@ context('USER API', () => {
         password: Cypress.env('test_password'),
         role: Cypress.env('test_role'),
       }).then(response => {
-        expect(response.status).to.equal(201)
-        expect(response.body).to.have.property('items')
-
-        const item = response.body.items?.[0] || {}
-        expect(item).to.have.property('email', Cypress.env('test_username'))
-        expect(item).to.have.property('role', Cypress.env('test_role'))
-        expect(item).to.have.property('locale', 'en-US')
+        cy.wrap(response).its('status').should('equal', 201)
+        cy.wrap(response).its('body').should('have.property', 'items')
+        cy.wrap(response)
+          .its('body.items.0')
+          .its('email')
+          .should('equal', Cypress.env('test_username'))
+        cy.wrap(response)
+          .its('body.items.0')
+          .its('role')
+          .should('equal', Cypress.env('test_role'))
+        cy.wrap(response)
+          .its('body.items.0')
+          .its('locale')
+          .should('equal', 'en-US')
 
         cy.log('Successfully created a new user')
       })
@@ -31,10 +38,10 @@ context('USER API', () => {
         email: Cypress.env('employee_username'),
         password: Cypress.env('employee_password'),
       }).then(response => {
-        expect(response.status).to.equal(200)
-        expect(response.body).to.have.property('auth', true)
-        expect(response.body).to.have.property('user')
-        expect(response.body).to.have.property('token')
+        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('body').its('auth').should('equal', true)
+        cy.wrap(response).its('body').should('have.property', 'user')
+        cy.wrap(response).its('body').should('have.property', 'token')
         cy.log('Successfully logged in')
 
         token = response.body.token
@@ -49,6 +56,34 @@ context('USER API', () => {
           expect(response.status).to.equal(200)
           cy.log('Successfully logged out')
         })
+      })
+    })
+
+    it('should not login using wrong username/password', () => {
+      cy.request({
+        method: 'POST',
+        url: `${version}/users/login`,
+        body: {
+          email: 'unknown@unknown.com',
+          password: 'password',
+        },
+        failOnStatusCode: false,
+      }).then(response => {
+        cy.wrap(response).its('status').should('equal', 400)
+      })
+    })
+
+    it('should not login without username/password', () => {
+      cy.request({
+        method: 'POST',
+        url: `${version}/users/login`,
+        body: {
+          email: null,
+          password: '',
+        },
+        failOnStatusCode: false,
+      }).then(response => {
+        cy.wrap(response).its('status').should('equal', 400)
       })
     })
   })

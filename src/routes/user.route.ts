@@ -30,11 +30,20 @@ const deleteUser: RequestHandler<{ email: string }> = async (req, res) => {
 
 const login: RequestHandler = async (req, res) => {
   try {
-    const user = await User.authenticate(req.body.email, req.body.password)
+    const { email, password } = req.body
+    if (!email || !password) {
+      throw new Error('400')
+    }
+    const user = await User.authenticate(email, password)
     const token = await user.generateAuthToken()
     res.status(200).send({ user, token, auth: true })
   } catch (error: unknown) {
-    res.status(500).send({ error: (error as Error).message })
+    const message = (error as Error).message
+    if (message === '400') {
+      res.status(400).send({ error: 'Invalid email or password' })
+    } else {
+      res.status(500).send({ error: message })
+    }
   }
 }
 
