@@ -1,0 +1,17 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "viewportWidth": 1024,
+  "viewportHeight": 800,
+  "video": false,
+  "screenshotOnRunFailure": false,
+  "defaultCommandTimeout": 5000,
+  "env": {
+    "version": "/api/v1"
+  },
+  "testFiles": [
+    "./user.spec.ts",
+    "./location.spec.ts",
+    "./department.spec.ts",
+    "./employee.spec.ts"
+  ]
+}

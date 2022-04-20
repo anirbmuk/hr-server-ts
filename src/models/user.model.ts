@@ -83,11 +83,11 @@ userSchema.static(
   async function authenticate(email: string, password: string): Promise<IUser> {
     const user = await User.findOne({ email })
     if (!user) {
-      throw new Error('Invalid email or password')
+      throw new Error('400')
     }
     const match = await bcryptjs.compare(password, user.password)
     if (!match) {
-      throw new Error('Invalid email or password')
+      throw new Error('400')
     }
     return user
   },

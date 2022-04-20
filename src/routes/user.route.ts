@@ -14,18 +14,41 @@ const addUser: RequestHandler = async (req, res) => {
   }
 }
 
-const login: RequestHandler = async (req, res) => {
+const deleteUser: RequestHandler<{ email: string }> = async (req, res) => {
+  const email = req.params.email
   try {
-    const user = await User.authenticate(req.body.email, req.body.password)
-    const token = await user.generateAuthToken()
-    res.status(200).send({ user, token, auth: true })
+    const user = await User.findOne({ email })
+    if (!user) {
+      return res.status(404).send()
+    }
+    await user.remove()
+    res.status(200).send(user)
   } catch (error: unknown) {
     res.status(500).send({ error: (error as Error).message })
   }
 }
 
+const login: RequestHandler = async (req, res) => {
+  try {
+    const { email, password } = req.body
+    if (!email || !password) {
+      throw new Error('400')
+    }
+    const user = await User.authenticate(email, password)
+    const token = await user.generateAuthToken()
+    res.status(200).send({ user, token, auth: true })
+  } catch (error: unknown) {
+    const message = (error as Error).message
+    if (message === '400') {
+      res.status(400).send({ error: 'Invalid email or password' })
+    } else {
+      res.status(500).send({ error: message })
+    }
+  }
+}
+
 const logout: RequestHandler = async (req, res) => {
-  const { user, token } = req.body as { user: IUser; token: string }
+  const { user, token } = req as { user: IUser; token: string }
   try {
     user.tokens = user.tokens.filter(eachToken => eachToken.token !== token)
     await user.save()
@@ -49,5 +72,6 @@ router.post('', addUser)
 router.post('/login', login)
 router.post('/logout', guard, logout)
 router.post('/logoutall', guard, logoutall)
+router.delete('/:email', deleteUser)
 
 export default router

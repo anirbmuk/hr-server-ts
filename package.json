@@ -4,7 +4,6 @@
   "description": "Node.js server and middleware for Oracle HR schema (TypeScript)",
   "main": "dist/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src",
     "format:check": "prettier --config ./.prettierrc --list-different \"src/**/*{.ts,.json}\"",
     "format:fix": "prettier --config ./.prettierrc --write \"src/**/*{.ts,.json}\"",
@@ -12,6 +11,9 @@
     "dev": "nodemon dist/server.js",
     "start": "node dist/server.js",
     "clean": "rimraf dist",
+    "cy:run": "cypress run --browser chrome",
+    "cy:open": "cypress open --browser chrome",
+    "cy:test": "cypress run --headless --browser chrome",
     "postinstall": "npx husky install"
   },
   "repository": {
@@ -48,6 +50,7 @@
     "@types/validator": "^13.7.2",
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",
+    "cypress": "^9.5.4",
     "eslint": "^8.13.0",
     "husky": "^7.0.4",
     "nodemon": "^2.0.15",
