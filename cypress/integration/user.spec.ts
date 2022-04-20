@@ -5,10 +5,7 @@ context('USER API', () => {
   describe('Test new and existing users', () => {
     let token: string
 
-    after(() => {
-      cy.request('DELETE', `${version}/users/${Cypress.env('test_username')}`)
-    })
-    it('should successfully create a new user', () => {
+    it('should create a new user', () => {
       cy.request('POST', `${version}/users`, {
         email: Cypress.env('test_username'),
         password: Cypress.env('test_password'),
@@ -33,13 +30,19 @@ context('USER API', () => {
       })
     })
 
-    it('should successfully login and logout an existing user', () => {
+    it('should delete the new user', () => {
+      cy.request('DELETE', `${version}/users/${Cypress.env('test_username')}`)
+        .its('status')
+        .should('equal', 200)
+    })
+
+    it('should login and logout an existing user', () => {
       cy.request('POST', `${version}/users/login`, {
         email: Cypress.env('employee_username'),
         password: Cypress.env('employee_password'),
       }).then(response => {
         cy.wrap(response).its('status').should('equal', 200)
-        cy.wrap(response).its('body').its('auth').should('equal', true)
+        cy.wrap(response).its('body.auth').should('equal', true)
         cy.wrap(response).its('body').should('have.property', 'user')
         cy.wrap(response).its('body').should('have.property', 'token')
         cy.log('Successfully logged in')
@@ -52,10 +55,9 @@ context('USER API', () => {
             Authorization: `Bearer ${token}`,
           },
           method: 'POST',
-        }).then(response => {
-          expect(response.status).to.equal(200)
-          cy.log('Successfully logged out')
         })
+          .its('status')
+          .should('equal', 200)
       })
     })
 
@@ -68,9 +70,9 @@ context('USER API', () => {
           password: 'password',
         },
         failOnStatusCode: false,
-      }).then(response => {
-        cy.wrap(response).its('status').should('equal', 400)
       })
+        .its('status')
+        .should('equal', 400)
     })
 
     it('should not login without username/password', () => {
@@ -82,9 +84,9 @@ context('USER API', () => {
           password: '',
         },
         failOnStatusCode: false,
-      }).then(response => {
-        cy.wrap(response).its('status').should('equal', 400)
       })
+        .its('status')
+        .should('equal', 400)
     })
   })
 })

@@ -45,6 +45,7 @@ context('DEPARTMENT API', () => {
         token = response.body.token
       })
     })
+
     it('should create a new department', () => {
       cy.request({
         url: `${version}/departments`,
@@ -76,7 +77,7 @@ context('DEPARTMENT API', () => {
       })
     })
 
-    it('should fetch the existing department with employees', () => {
+    it('should fetch an existing department with employees', () => {
       cy.request({
         url: `${version}/departments/${existingDepartment.DepartmentId}?children=employees`,
         headers: {
@@ -95,16 +96,16 @@ context('DEPARTMENT API', () => {
           .should('equal', existingDepartment.DepartmentName)
         cy.wrap(response)
           .its('body.employees.0')
+          .its('DepartmentId')
+          .should('equal', existingDepartment.DepartmentId)
+        cy.wrap(response)
+          .its('body.employees.0')
           .its('EmployeeId')
           .should('equal', existingEmployee.EmployeeId)
         cy.wrap(response)
           .its('body.employees.0')
           .its('Email')
           .should('equal', existingEmployee.Email)
-        cy.wrap(response)
-          .its('body.employees.0')
-          .its('DepartmentId')
-          .should('equal', existingDepartment.DepartmentId)
       })
     })
 
@@ -127,7 +128,7 @@ context('DEPARTMENT API', () => {
       })
     })
 
-    it('should delete the newly created department', () => {
+    it('should delete the new department', () => {
       cy.request({
         url: `${version}/departments/${newDepartment.DepartmentId}`,
         headers: {
@@ -214,7 +215,7 @@ context('DEPARTMENT API', () => {
       })
     })
 
-    it('should not be able to delete the newly created department', () => {
+    it('should not be able to delete the new department', () => {
       cy.request({
         url: `${version}/departments/${newDepartment.DepartmentId}`,
         headers: {

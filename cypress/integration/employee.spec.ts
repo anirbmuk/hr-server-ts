@@ -72,7 +72,7 @@ context('EMPLOYEE API', () => {
       })
     })
 
-    it('should fetch the existing employee with directs', () => {
+    it('should fetch an existing employee with directs', () => {
       cy.request({
         url: `${version}/employees/${existingEmployee.EmployeeId}?children=directs`,
         headers: {
@@ -91,22 +91,22 @@ context('EMPLOYEE API', () => {
           .should('equal', existingEmployee.Email)
         cy.wrap(response)
           .its('body.directs.0')
+          .its('ManagerId')
+          .should('equal', existingEmployee.EmployeeId)
+        cy.wrap(response)
+          .its('body.directs.0')
           .its('EmployeeId')
           .should('equal', existingDirect.EmployeeId)
         cy.wrap(response)
           .its('body.directs.0')
           .its('Email')
           .should('equal', existingDirect.Email)
-        cy.wrap(response)
-          .its('body.directs.0')
-          .its('ManagerId')
-          .should('equal', existingEmployee.EmployeeId)
       })
     })
 
     it('should update the new employee', () => {
-      const newFirstName = 'New First'
-      const newLastName = 'New First'
+      const newFirstName = 'New FirstName'
+      const newLastName = 'New LastName'
       cy.request({
         url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
@@ -124,7 +124,7 @@ context('EMPLOYEE API', () => {
       })
     })
 
-    it('should delete the newly created employee', () => {
+    it('should delete the new employee', () => {
       cy.request({
         url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
@@ -193,8 +193,8 @@ context('EMPLOYEE API', () => {
     })
 
     it('should update the new employee', () => {
-      const newFirstName = 'New First'
-      const newLastName = 'New First'
+      const newFirstName = 'New FirstName'
+      const newLastName = 'New LastName'
       cy.request({
         url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
@@ -212,7 +212,7 @@ context('EMPLOYEE API', () => {
       })
     })
 
-    it('should not be able to delete the newly created employee', () => {
+    it('should not be able to delete the new employee', () => {
       cy.request({
         url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
@@ -279,8 +279,8 @@ context('EMPLOYEE API', () => {
     })
 
     it('should not be able to update an existing employee', () => {
-      const newFirstName = 'New First'
-      const newLastName = 'New First'
+      const newFirstName = 'New FirstName'
+      const newLastName = 'New LastName'
       cy.request({
         url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {

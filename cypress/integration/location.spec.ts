@@ -76,7 +76,7 @@ context('LOCATION API', () => {
       })
     })
 
-    it('should fetch the existing location with departments', () => {
+    it('should fetch an existing location with departments', () => {
       cy.request({
         url: `${version}/locations/${existingLocation.LocationId}?children=departments`,
         headers: {
@@ -95,16 +95,16 @@ context('LOCATION API', () => {
           .should('equal', existingLocation.StreetAddress)
         cy.wrap(response)
           .its('body.departments.0')
+          .its('LocationId')
+          .should('equal', existingLocation.LocationId)
+        cy.wrap(response)
+          .its('body.departments.0')
           .its('DepartmentId')
           .should('equal', existingDepartment.DepartmentId)
         cy.wrap(response)
           .its('body.departments.0')
           .its('DepartmentName')
           .should('equal', existingDepartment.DepartmentName)
-        cy.wrap(response)
-          .its('body.departments.0')
-          .its('LocationId')
-          .should('equal', existingLocation.LocationId)
       })
     })
 
@@ -127,7 +127,7 @@ context('LOCATION API', () => {
       })
     })
 
-    it('should delete the newly created location', () => {
+    it('should delete the new location', () => {
       cy.request({
         url: `${version}/locations/${newLocation.LocationId}`,
         headers: {
@@ -214,7 +214,7 @@ context('LOCATION API', () => {
       })
     })
 
-    it('should not be able to delete the newly created location', () => {
+    it('should not be able to delete the new location', () => {
       cy.request({
         url: `${version}/locations/${newLocation.LocationId}`,
         headers: {
