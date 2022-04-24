@@ -1,15 +1,15 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose';
 
-import { IBase, IStatics } from '.'
+import { IBase, IStatics } from '.';
 
 export interface ILocation extends IBase<ILocation> {
-  LocationId: number
-  StreetAddress: string
-  PostalCode: string
-  City: string
-  StateProvince: string
-  CountryId: string
-  [key: string]: unknown
+  LocationId: number;
+  StreetAddress: string;
+  PostalCode: string;
+  City: string;
+  StateProvince: string;
+  CountryId: string;
+  [key: string]: unknown;
 }
 
 const locationSchema = new Schema<ILocation, IStatics<ILocation>>(
@@ -47,23 +47,23 @@ const locationSchema = new Schema<ILocation, IStatics<ILocation>>(
   {
     timestamps: true,
   },
-)
+);
 
 locationSchema.virtual('departments', {
   ref: 'department',
   localField: 'LocationId',
   foreignField: 'LocationId',
-})
+});
 
 locationSchema.methods.toJSON = function () {
-  const location = this
-  const locationObject = location.toObject()
+  const location = this;
+  const locationObject = location.toObject();
 
-  delete locationObject._id
-  delete locationObject.__v
+  delete locationObject._id;
+  delete locationObject.__v;
 
-  return locationObject
-}
+  return locationObject;
+};
 
 locationSchema.statics.getUpdatableAttributes = function () {
   return [
@@ -73,8 +73,8 @@ locationSchema.statics.getUpdatableAttributes = function () {
     'City',
     'StateProvince',
     'CountryId',
-  ]
-}
+  ];
+};
 
 locationSchema.statics.getSearchableAttributes = function () {
   return [
@@ -84,10 +84,10 @@ locationSchema.statics.getSearchableAttributes = function () {
     { attr: 'City', type: 'String' },
     { attr: 'StateProvince', type: 'String' },
     { attr: 'CountryId', type: 'String' },
-  ]
-}
+  ];
+};
 
 export const Location = model<ILocation, IStatics<ILocation>>(
   'location',
   locationSchema,
-)
+);

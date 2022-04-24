@@ -1,13 +1,13 @@
-import { Model } from 'mongoose'
+import { Model } from 'mongoose';
 
 export interface IBase<T> {
-  save(): Promise<T>
+  save(): Promise<T>;
 }
 
 export interface IStatics<T> extends Model<T> {
-  getUpdatableAttributes: () => string[]
+  getUpdatableAttributes: () => string[];
   getSearchableAttributes: () => {
-    attr: string
-    type: 'Number' | 'String'
-  }[]
+    attr: string;
+    type: 'Number' | 'String';
+  }[];
 }

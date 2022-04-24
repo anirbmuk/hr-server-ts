@@ -5,7 +5,7 @@ export const newLocation = {
   City: 'Test City',
   StateProvince: 'TEST',
   CountryId: 'IN',
-}
+};
 
 export const existingLocation = {
   LocationId: 1000,
@@ -13,4 +13,4 @@ export const existingLocation = {
   PostalCode: '00989',
   City: 'Roma',
   CountryId: 'IT',
-}
+};

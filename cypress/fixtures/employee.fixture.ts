@@ -9,7 +9,7 @@ export const newEmployee = {
   Salary: 10000000,
   DepartmentId: 10,
   EmployeeRating: 0,
-}
+};
 
 export const existingEmployee = {
   EmployeeId: 100,
@@ -21,7 +21,7 @@ export const existingEmployee = {
   Salary: 24000000,
   DepartmentId: 10,
   EmployeeRating: 0,
-}
+};
 
 export const existingDirect = {
   EmployeeId: 101,
@@ -34,4 +34,4 @@ export const existingDirect = {
   ManagerId: 100,
   DepartmentId: 20,
   EmployeeRating: 0,
-}
+};

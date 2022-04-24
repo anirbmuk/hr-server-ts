@@ -1,12 +1,12 @@
 {
   "name": "hr-server-ts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Node.js server and middleware for Oracle HR schema (TypeScript)",
   "main": "dist/server.js",
   "scripts": {
     "lint": "eslint src",
-    "format:check": "prettier --config ./.prettierrc --list-different \"src/**/*{.ts,.json}\"",
-    "format:fix": "prettier --config ./.prettierrc --write \"src/**/*{.ts,.json}\"",
+    "format:check": "prettier --config ./.prettierrc --list-different \"src/**/*{.ts,.json}\" --list-different \"cypress/**/*{.ts,.json}\"",
+    "format:fix": "prettier --config ./.prettierrc --write \"src/**/*{.ts,.json}\" --write \"cypress/**/*{.ts,.json}\"",
     "build": "tsc",
     "dev": "nodemon dist/server.js",
     "start": "node dist/server.js",

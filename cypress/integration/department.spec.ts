@@ -4,17 +4,17 @@ import {
   newDepartment,
   existingDepartment,
   existingEmployee,
-} from './../fixtures'
+} from './../fixtures';
 
 context('DEPARTMENT API', () => {
-  const version = Cypress.env('version')
+  const version = Cypress.env('version');
 
   const cleanup = () => {
     cy.request('POST', `${version}/users/login`, {
       email: Cypress.env('admin_username'),
       password: Cypress.env('admin_password'),
     }).then(response => {
-      const newToken = response.body.token
+      const newToken = response.body.token;
 
       cy.request({
         url: `${version}/departments/${newDepartment.DepartmentId}`,
@@ -22,7 +22,7 @@ context('DEPARTMENT API', () => {
           Authorization: `Bearer ${newToken}`,
         },
         method: 'DELETE',
-      })
+      });
 
       cy.request({
         url: `${version}/users/logout`,
@@ -30,21 +30,22 @@ context('DEPARTMENT API', () => {
           Authorization: `Bearer ${newToken}`,
         },
         method: 'POST',
-      })
-    })
-  }
+      });
+    });
+  };
 
   describe('Tests for HR_ADMIN role', () => {
-    let token: string
+    let token: string;
 
     before(() => {
       cy.request('POST', `${version}/users/login`, {
         email: Cypress.env('admin_username'),
         password: Cypress.env('admin_password'),
       }).then(response => {
-        token = response.body.token
-      })
-    })
+        // eslint-disable-next-line prefer-destructuring
+        token = response.body.token;
+      });
+    });
 
     it('should create a new department', () => {
       cy.request({
@@ -55,12 +56,12 @@ context('DEPARTMENT API', () => {
         method: 'POST',
         body: newDepartment,
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 201)
+        cy.wrap(response).its('status').should('equal', 201);
         cy.wrap(response)
           .its('body.DepartmentId')
-          .should('equal', newDepartment.DepartmentId)
-      })
-    })
+          .should('equal', newDepartment.DepartmentId);
+      });
+    });
 
     it('should fetch the new department', () => {
       cy.request({
@@ -70,12 +71,12 @@ context('DEPARTMENT API', () => {
         },
         method: 'GET',
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.DepartmentId')
-          .should('equal', newDepartment.DepartmentId)
-      })
-    })
+          .should('equal', newDepartment.DepartmentId);
+      });
+    });
 
     it('should fetch an existing department with employees', () => {
       cy.request({
@@ -85,32 +86,32 @@ context('DEPARTMENT API', () => {
         },
         method: 'GET',
       }).then(response => {
-        cy.wrap(response).its('body').should('have.property', 'employees')
+        cy.wrap(response).its('body').should('have.property', 'employees');
         cy.wrap(response)
           .its('body')
           .its('DepartmentId')
-          .should('equal', existingDepartment.DepartmentId)
+          .should('equal', existingDepartment.DepartmentId);
         cy.wrap(response)
           .its('body')
           .its('DepartmentName')
-          .should('equal', existingDepartment.DepartmentName)
+          .should('equal', existingDepartment.DepartmentName);
         cy.wrap(response)
           .its('body.employees.0')
           .its('DepartmentId')
-          .should('equal', existingDepartment.DepartmentId)
+          .should('equal', existingDepartment.DepartmentId);
         cy.wrap(response)
           .its('body.employees.0')
           .its('EmployeeId')
-          .should('equal', existingEmployee.EmployeeId)
+          .should('equal', existingEmployee.EmployeeId);
         cy.wrap(response)
           .its('body.employees.0')
           .its('Email')
-          .should('equal', existingEmployee.Email)
-      })
-    })
+          .should('equal', existingEmployee.Email);
+      });
+    });
 
     it('should update the new department', () => {
-      const newDepartmentName = 'New Department'
+      const newDepartmentName = 'New Department';
       cy.request({
         url: `${version}/departments/${newDepartment.DepartmentId}`,
         headers: {
@@ -121,12 +122,12 @@ context('DEPARTMENT API', () => {
           DepartmentName: newDepartmentName,
         },
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.DepartmentName')
-          .should('equal', newDepartmentName)
-      })
-    })
+          .should('equal', newDepartmentName);
+      });
+    });
 
     it('should delete the new department', () => {
       cy.request({
@@ -136,12 +137,12 @@ context('DEPARTMENT API', () => {
         },
         method: 'DELETE',
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.DepartmentId')
-          .should('equal', newDepartment.DepartmentId)
-      })
-    })
+          .should('equal', newDepartment.DepartmentId);
+      });
+    });
 
     after(() => {
       cy.request({
@@ -150,21 +151,22 @@ context('DEPARTMENT API', () => {
           Authorization: `Bearer ${token}`,
         },
         method: 'POST',
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('Tests for HR_MANAGER role', () => {
-    let token: string
+    let token: string;
 
     before(() => {
       cy.request('POST', `${version}/users/login`, {
         email: Cypress.env('manager_username'),
         password: Cypress.env('manager_password'),
       }).then(response => {
-        token = response.body.token
-      })
-    })
+        // eslint-disable-next-line prefer-destructuring
+        token = response.body.token;
+      });
+    });
     it('should create a new department', () => {
       cy.request({
         url: `${version}/departments`,
@@ -174,12 +176,12 @@ context('DEPARTMENT API', () => {
         method: 'POST',
         body: newDepartment,
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 201)
+        cy.wrap(response).its('status').should('equal', 201);
         cy.wrap(response)
           .its('body.DepartmentId')
-          .should('equal', newDepartment.DepartmentId)
-      })
-    })
+          .should('equal', newDepartment.DepartmentId);
+      });
+    });
 
     it('should fetch the new department', () => {
       cy.request({
@@ -189,15 +191,15 @@ context('DEPARTMENT API', () => {
         },
         method: 'GET',
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.DepartmentId')
-          .should('equal', newDepartment.DepartmentId)
-      })
-    })
+          .should('equal', newDepartment.DepartmentId);
+      });
+    });
 
     it('should update the new department', () => {
-      const newDepartmentName = 'New Department'
+      const newDepartmentName = 'New Department';
       cy.request({
         url: `${version}/departments/${newDepartment.DepartmentId}`,
         headers: {
@@ -208,12 +210,12 @@ context('DEPARTMENT API', () => {
           DepartmentName: newDepartmentName,
         },
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.DepartmentName')
-          .should('equal', newDepartmentName)
-      })
-    })
+          .should('equal', newDepartmentName);
+      });
+    });
 
     it('should not be able to delete the new department', () => {
       cy.request({
@@ -225,8 +227,8 @@ context('DEPARTMENT API', () => {
         failOnStatusCode: false,
       })
         .its('status')
-        .should('equal', 401)
-    })
+        .should('equal', 401);
+    });
 
     after(() => {
       cy.request({
@@ -235,23 +237,24 @@ context('DEPARTMENT API', () => {
           Authorization: `Bearer ${token}`,
         },
         method: 'POST',
-      })
+      });
 
-      cleanup()
-    })
-  })
+      cleanup();
+    });
+  });
 
   describe('Tests for HR_EMPLOYEE role', () => {
-    let token: string
+    let token: string;
 
     before(() => {
       cy.request('POST', `${version}/users/login`, {
         email: Cypress.env('employee_username'),
         password: Cypress.env('employee_password'),
       }).then(response => {
-        token = response.body.token
-      })
-    })
+        // eslint-disable-next-line prefer-destructuring
+        token = response.body.token;
+      });
+    });
     it('should not be able to create a new department', () => {
       cy.request({
         url: `${version}/departments`,
@@ -263,8 +266,8 @@ context('DEPARTMENT API', () => {
         failOnStatusCode: false,
       })
         .its('status')
-        .should('equal', 401)
-    })
+        .should('equal', 401);
+    });
 
     it('should fetch an existing department', () => {
       cy.request({
@@ -274,15 +277,15 @@ context('DEPARTMENT API', () => {
         },
         method: 'GET',
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.DepartmentId')
-          .should('equal', existingDepartment.DepartmentId)
-      })
-    })
+          .should('equal', existingDepartment.DepartmentId);
+      });
+    });
 
     it('should not be able to update an existing department', () => {
-      const newDepartmentName = 'New Department'
+      const newDepartmentName = 'New Department';
       cy.request({
         url: `${version}/departments/${newDepartment.DepartmentId}`,
         headers: {
@@ -295,8 +298,8 @@ context('DEPARTMENT API', () => {
         failOnStatusCode: false,
       })
         .its('status')
-        .should('equal', 401)
-    })
+        .should('equal', 401);
+    });
 
     it('should not be able to delete an existing department', () => {
       cy.request({
@@ -308,8 +311,8 @@ context('DEPARTMENT API', () => {
         failOnStatusCode: false,
       })
         .its('status')
-        .should('equal', 401)
-    })
+        .should('equal', 401);
+    });
 
     after(() => {
       cy.request({
@@ -318,7 +321,7 @@ context('DEPARTMENT API', () => {
           Authorization: `Bearer ${token}`,
         },
         method: 'POST',
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

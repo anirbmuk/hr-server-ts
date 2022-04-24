@@ -1,22 +1,22 @@
-import { Schema, model } from 'mongoose'
-import validator from 'validator'
+import { Schema, model } from 'mongoose';
+import validator from 'validator';
 
-import { IBase, IStatics } from '.'
+import { IBase, IStatics } from '.';
 
 export interface IEmployee extends IBase<IEmployee> {
-  EmployeeId: number
-  FirstName: string
-  LastName: string
-  Email: string
-  PhoneNumber: string
-  HireDate: Date
-  JobId: string
-  Salary: number
-  CommissionPct: number
-  ManagerId: number
-  DepartmentId: number
-  EmployeeRating: number
-  [key: string]: unknown
+  EmployeeId: number;
+  FirstName: string;
+  LastName: string;
+  Email: string;
+  PhoneNumber: string;
+  HireDate: Date;
+  JobId: string;
+  Salary: number;
+  CommissionPct: number;
+  ManagerId: number;
+  DepartmentId: number;
+  EmployeeRating: number;
+  [key: string]: unknown;
 }
 
 const employeeSchema = new Schema<IEmployee, IStatics<IEmployee>>(
@@ -43,7 +43,7 @@ const employeeSchema = new Schema<IEmployee, IStatics<IEmployee>>(
       lowercase: true,
       validate(value: string) {
         if (!validator.isEmail(value)) {
-          throw new Error('Email is not correctly formatted')
+          throw new Error('Email is not correctly formatted');
         }
       },
     },
@@ -85,23 +85,23 @@ const employeeSchema = new Schema<IEmployee, IStatics<IEmployee>>(
   {
     timestamps: true,
   },
-)
+);
 
 employeeSchema.virtual('directs', {
   ref: 'employee',
   localField: 'EmployeeId',
   foreignField: 'ManagerId',
-})
+});
 
 employeeSchema.methods.toJSON = function () {
-  const employee = this
-  const employeeObject = employee.toObject()
+  const employee = this;
+  const employeeObject = employee.toObject();
 
-  delete employeeObject._id
-  delete employeeObject.__v
+  delete employeeObject._id;
+  delete employeeObject.__v;
 
-  return employeeObject
-}
+  return employeeObject;
+};
 
 employeeSchema.statics.getUpdatableAttributes = function () {
   return [
@@ -117,8 +117,8 @@ employeeSchema.statics.getUpdatableAttributes = function () {
     'ManagerId',
     'DepartmentId',
     'EmployeeRating',
-  ]
-}
+  ];
+};
 
 employeeSchema.statics.getSearchableAttributes = function () {
   return [
@@ -132,10 +132,10 @@ employeeSchema.statics.getSearchableAttributes = function () {
     { attr: 'ManagerId', type: 'Number' },
     { attr: 'DepartmentId', type: 'Number' },
     { attr: 'EmployeeRating', type: 'Number' },
-  ]
-}
+  ];
+};
 
 export const Employee = model<IEmployee, IStatics<IEmployee>>(
   'employee',
   employeeSchema,
-)
+);

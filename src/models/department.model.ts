@@ -1,13 +1,13 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model } from 'mongoose';
 
-import { IBase, IStatics } from '.'
+import { IBase, IStatics } from '.';
 
 export interface IDepartment extends IBase<IDepartment> {
-  DepartmentId: number
-  DepartmentName: string
-  ManagerId: number
-  LocationId: number
-  [key: string]: unknown
+  DepartmentId: number;
+  DepartmentName: string;
+  ManagerId: number;
+  LocationId: number;
+  [key: string]: unknown;
 }
 
 const departmentSchema = new Schema<IDepartment, IStatics<IDepartment>>(
@@ -36,27 +36,27 @@ const departmentSchema = new Schema<IDepartment, IStatics<IDepartment>>(
   {
     timestamps: true,
   },
-)
+);
 
 departmentSchema.virtual('employees', {
   ref: 'employee',
   localField: 'DepartmentId',
   foreignField: 'DepartmentId',
-})
+});
 
 departmentSchema.methods.toJSON = function () {
-  const department = this
-  const departmentObject = department.toObject()
+  const department = this;
+  const departmentObject = department.toObject();
 
-  delete departmentObject._id
-  delete departmentObject.__v
+  delete departmentObject._id;
+  delete departmentObject.__v;
 
-  return departmentObject
-}
+  return departmentObject;
+};
 
 departmentSchema.statics.getUpdatableAttributes = function () {
-  return ['DepartmentId', 'DepartmentName', 'ManagerId', 'LocationId']
-}
+  return ['DepartmentId', 'DepartmentName', 'ManagerId', 'LocationId'];
+};
 
 departmentSchema.statics.getSearchableAttributes = function () {
   return [
@@ -64,8 +64,8 @@ departmentSchema.statics.getSearchableAttributes = function () {
     { attr: 'DepartmentName', type: 'String' },
     { attr: 'ManagerId', type: 'Number' },
     { attr: 'LocationId', type: 'Number' },
-  ]
-}
+  ];
+};
 
 /* departmentSchema.pre('remove', async function(next) {
     const department = this;
@@ -76,4 +76,4 @@ departmentSchema.statics.getSearchableAttributes = function () {
 export const Department = model<IDepartment, IStatics<IDepartment>>(
   'department',
   departmentSchema,
-)
+);

@@ -1,11 +1,11 @@
-import { model, Schema } from 'mongoose'
-import { IStatics } from './base.model'
+import { model, Schema } from 'mongoose';
+import { IStatics } from './base.model';
 
 export interface IJob {
-  JobId: string
-  JobTitle: string
-  MinSalary: number
-  MaxSalary: number
+  JobId: string;
+  JobTitle: string;
+  MinSalary: number;
+  MaxSalary: number;
 }
 
 const jobSchema = new Schema<IJob, IStatics<IJob>>(
@@ -31,16 +31,16 @@ const jobSchema = new Schema<IJob, IStatics<IJob>>(
   {
     timestamps: true,
   },
-)
+);
 
 jobSchema.methods.toJSON = function () {
-  const job = this
-  const jobObject = job.toObject()
+  const job = this;
+  const jobObject = job.toObject();
 
-  delete jobObject._id
-  delete jobObject.__v
+  delete jobObject._id;
+  delete jobObject.__v;
 
-  return jobObject
-}
+  return jobObject;
+};
 
-export const Job = model<IJob, IStatics<IJob>>('job', jobSchema)
+export const Job = model<IJob, IStatics<IJob>>('job', jobSchema);

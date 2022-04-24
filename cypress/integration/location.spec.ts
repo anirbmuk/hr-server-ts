@@ -4,17 +4,17 @@ import {
   newLocation,
   existingLocation,
   existingDepartment,
-} from './../fixtures'
+} from './../fixtures';
 
 context('LOCATION API', () => {
-  const version = Cypress.env('version')
+  const version = Cypress.env('version');
 
   const cleanup = () => {
     cy.request('POST', `${version}/users/login`, {
       email: Cypress.env('admin_username'),
       password: Cypress.env('admin_password'),
     }).then(response => {
-      const newToken = response.body.token
+      const newToken = response.body.token;
 
       cy.request({
         url: `${version}/locations/${newLocation.LocationId}`,
@@ -22,7 +22,7 @@ context('LOCATION API', () => {
           Authorization: `Bearer ${newToken}`,
         },
         method: 'DELETE',
-      })
+      });
 
       cy.request({
         url: `${version}/users/logout`,
@@ -30,21 +30,22 @@ context('LOCATION API', () => {
           Authorization: `Bearer ${newToken}`,
         },
         method: 'POST',
-      })
-    })
-  }
+      });
+    });
+  };
 
   describe('Tests for HR_ADMIN role', () => {
-    let token: string
+    let token: string;
 
     before(() => {
       cy.request('POST', `${version}/users/login`, {
         email: Cypress.env('admin_username'),
         password: Cypress.env('admin_password'),
       }).then(response => {
-        token = response.body.token
-      })
-    })
+        // eslint-disable-next-line prefer-destructuring
+        token = response.body.token;
+      });
+    });
     it('should create a new location', () => {
       cy.request({
         url: `${version}/locations`,
@@ -54,12 +55,12 @@ context('LOCATION API', () => {
         method: 'POST',
         body: newLocation,
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 201)
+        cy.wrap(response).its('status').should('equal', 201);
         cy.wrap(response)
           .its('body.LocationId')
-          .should('equal', newLocation.LocationId)
-      })
-    })
+          .should('equal', newLocation.LocationId);
+      });
+    });
 
     it('should fetch the new location', () => {
       cy.request({
@@ -69,12 +70,12 @@ context('LOCATION API', () => {
         },
         method: 'GET',
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.LocationId')
-          .should('equal', newLocation.LocationId)
-      })
-    })
+          .should('equal', newLocation.LocationId);
+      });
+    });
 
     it('should fetch an existing location with departments', () => {
       cy.request({
@@ -84,32 +85,32 @@ context('LOCATION API', () => {
         },
         method: 'GET',
       }).then(response => {
-        cy.wrap(response).its('body').should('have.property', 'departments')
+        cy.wrap(response).its('body').should('have.property', 'departments');
         cy.wrap(response)
           .its('body')
           .its('LocationId')
-          .should('equal', existingLocation.LocationId)
+          .should('equal', existingLocation.LocationId);
         cy.wrap(response)
           .its('body')
           .its('StreetAddress')
-          .should('equal', existingLocation.StreetAddress)
+          .should('equal', existingLocation.StreetAddress);
         cy.wrap(response)
           .its('body.departments.0')
           .its('LocationId')
-          .should('equal', existingLocation.LocationId)
+          .should('equal', existingLocation.LocationId);
         cy.wrap(response)
           .its('body.departments.0')
           .its('DepartmentId')
-          .should('equal', existingDepartment.DepartmentId)
+          .should('equal', existingDepartment.DepartmentId);
         cy.wrap(response)
           .its('body.departments.0')
           .its('DepartmentName')
-          .should('equal', existingDepartment.DepartmentName)
-      })
-    })
+          .should('equal', existingDepartment.DepartmentName);
+      });
+    });
 
     it('should update the new location', () => {
-      const newStreetAddress = 'New StreetAddress'
+      const newStreetAddress = 'New StreetAddress';
       cy.request({
         url: `${version}/locations/${newLocation.LocationId}`,
         headers: {
@@ -120,12 +121,12 @@ context('LOCATION API', () => {
           StreetAddress: newStreetAddress,
         },
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.StreetAddress')
-          .should('equal', newStreetAddress)
-      })
-    })
+          .should('equal', newStreetAddress);
+      });
+    });
 
     it('should delete the new location', () => {
       cy.request({
@@ -135,12 +136,12 @@ context('LOCATION API', () => {
         },
         method: 'DELETE',
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.LocationId')
-          .should('equal', newLocation.LocationId)
-      })
-    })
+          .should('equal', newLocation.LocationId);
+      });
+    });
 
     after(() => {
       cy.request({
@@ -149,21 +150,22 @@ context('LOCATION API', () => {
           Authorization: `Bearer ${token}`,
         },
         method: 'POST',
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('Tests for HR_MANAGER role', () => {
-    let token: string
+    let token: string;
 
     before(() => {
       cy.request('POST', `${version}/users/login`, {
         email: Cypress.env('manager_username'),
         password: Cypress.env('manager_password'),
       }).then(response => {
-        token = response.body.token
-      })
-    })
+        // eslint-disable-next-line prefer-destructuring
+        token = response.body.token;
+      });
+    });
     it('should create a new location', () => {
       cy.request({
         url: `${version}/locations`,
@@ -173,12 +175,12 @@ context('LOCATION API', () => {
         method: 'POST',
         body: newLocation,
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 201)
+        cy.wrap(response).its('status').should('equal', 201);
         cy.wrap(response)
           .its('body.LocationId')
-          .should('equal', newLocation.LocationId)
-      })
-    })
+          .should('equal', newLocation.LocationId);
+      });
+    });
 
     it('should fetch the new location', () => {
       cy.request({
@@ -188,15 +190,15 @@ context('LOCATION API', () => {
         },
         method: 'GET',
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.LocationId')
-          .should('equal', newLocation.LocationId)
-      })
-    })
+          .should('equal', newLocation.LocationId);
+      });
+    });
 
     it('should update the new location', () => {
-      const newStreetAddress = 'New StreetAddress'
+      const newStreetAddress = 'New StreetAddress';
       cy.request({
         url: `${version}/locations/${newLocation.LocationId}`,
         headers: {
@@ -207,12 +209,12 @@ context('LOCATION API', () => {
           StreetAddress: newStreetAddress,
         },
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.StreetAddress')
-          .should('equal', newStreetAddress)
-      })
-    })
+          .should('equal', newStreetAddress);
+      });
+    });
 
     it('should not be able to delete the new location', () => {
       cy.request({
@@ -224,8 +226,8 @@ context('LOCATION API', () => {
         failOnStatusCode: false,
       })
         .its('status')
-        .should('equal', 401)
-    })
+        .should('equal', 401);
+    });
 
     after(() => {
       cy.request({
@@ -234,23 +236,24 @@ context('LOCATION API', () => {
           Authorization: `Bearer ${token}`,
         },
         method: 'POST',
-      })
+      });
 
-      cleanup()
-    })
-  })
+      cleanup();
+    });
+  });
 
   describe('Tests for HR_EMPLOYEE role', () => {
-    let token: string
+    let token: string;
 
     before(() => {
       cy.request('POST', `${version}/users/login`, {
         email: Cypress.env('employee_username'),
         password: Cypress.env('employee_password'),
       }).then(response => {
-        token = response.body.token
-      })
-    })
+        // eslint-disable-next-line prefer-destructuring
+        token = response.body.token;
+      });
+    });
     it('should not be able to create a new location', () => {
       cy.request({
         url: `${version}/locations`,
@@ -262,8 +265,8 @@ context('LOCATION API', () => {
         failOnStatusCode: false,
       })
         .its('status')
-        .should('equal', 401)
-    })
+        .should('equal', 401);
+    });
 
     it('should fetch an existing location', () => {
       cy.request({
@@ -273,15 +276,15 @@ context('LOCATION API', () => {
         },
         method: 'GET',
       }).then(response => {
-        cy.wrap(response).its('status').should('equal', 200)
+        cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
           .its('body.LocationId')
-          .should('equal', existingLocation.LocationId)
-      })
-    })
+          .should('equal', existingLocation.LocationId);
+      });
+    });
 
     it('should not be able to update an existing location', () => {
-      const newStreetAddress = 'New StreetAddress'
+      const newStreetAddress = 'New StreetAddress';
       cy.request({
         url: `${version}/locations/${existingLocation.LocationId}`,
         headers: {
@@ -294,8 +297,8 @@ context('LOCATION API', () => {
         failOnStatusCode: false,
       })
         .its('status')
-        .should('equal', 401)
-    })
+        .should('equal', 401);
+    });
 
     it('should not be able to delete an existing location', () => {
       cy.request({
@@ -307,8 +310,8 @@ context('LOCATION API', () => {
         failOnStatusCode: false,
       })
         .its('status')
-        .should('equal', 401)
-    })
+        .should('equal', 401);
+    });
 
     after(() => {
       cy.request({
@@ -317,7 +320,7 @@ context('LOCATION API', () => {
           Authorization: `Bearer ${token}`,
         },
         method: 'POST',
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

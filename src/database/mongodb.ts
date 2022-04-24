@@ -1,15 +1,15 @@
-import mongoose from 'mongoose'
-import { config } from 'dotenv'
+import mongoose from 'mongoose';
+import { config } from 'dotenv';
 
-config()
+config();
 
-let connectionURL: string
-const app_environment = process.env.app_environment
+let connectionURL: string;
+const { app_environment } = process.env;
 
 if (app_environment === 'dev') {
-  connectionURL = process.env.mongodb_local_connection_url || ''
+  connectionURL = process.env.mongodb_local_connection_url || '';
 } else {
-  connectionURL = process.env.mongodb_atlas_connection_url || ''
+  connectionURL = process.env.mongodb_atlas_connection_url || '';
 }
 
 mongoose
@@ -17,4 +17,4 @@ mongoose
     autoIndex: true,
     autoCreate: true,
   })
-  .catch(() => console.error('Failed to connect to mongodb'))
+  .catch(() => console.error('Failed to connect to mongodb'));
