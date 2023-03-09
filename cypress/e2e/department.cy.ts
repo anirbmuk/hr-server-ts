@@ -4,7 +4,7 @@ import {
   newDepartment,
   existingDepartment,
   existingEmployee,
-} from './../fixtures';
+} from '../fixtures';
 
 context('DEPARTMENT API', () => {
   const version = Cypress.env('version');

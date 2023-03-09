@@ -1,12 +1,8 @@
 /// <reference types="Cypress" />
 
-import {
-  newLocation,
-  existingLocation,
-  existingDepartment,
-} from './../fixtures';
+import { newEmployee, existingEmployee, existingDirect } from '../fixtures';
 
-context('LOCATION API', () => {
+context('EMPLOYEE API', () => {
   const version = Cypress.env('version');
 
   const cleanup = () => {
@@ -17,7 +13,7 @@ context('LOCATION API', () => {
       const newToken = response.body.token;
 
       cy.request({
-        url: `${version}/locations/${newLocation.LocationId}`,
+        url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
           Authorization: `Bearer ${newToken}`,
         },
@@ -46,25 +42,25 @@ context('LOCATION API', () => {
         token = response.body.token;
       });
     });
-    it('should create a new location', () => {
+    it('should create a new employee', () => {
       cy.request({
-        url: `${version}/locations`,
+        url: `${version}/employees`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
         method: 'POST',
-        body: newLocation,
+        body: newEmployee,
       }).then(response => {
         cy.wrap(response).its('status').should('equal', 201);
         cy.wrap(response)
-          .its('body.LocationId')
-          .should('equal', newLocation.LocationId);
+          .its('body.EmployeeId')
+          .should('equal', newEmployee.EmployeeId);
       });
     });
 
-    it('should fetch the new location', () => {
+    it('should fetch the new employee', () => {
       cy.request({
-        url: `${version}/locations/${newLocation.LocationId}`,
+        url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -72,65 +68,66 @@ context('LOCATION API', () => {
       }).then(response => {
         cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
-          .its('body.LocationId')
-          .should('equal', newLocation.LocationId);
+          .its('body.EmployeeId')
+          .should('equal', newEmployee.EmployeeId);
       });
     });
 
-    it('should fetch an existing location with departments', () => {
+    it('should fetch an existing employee with directs', () => {
       cy.request({
-        url: `${version}/locations/${existingLocation.LocationId}?children=departments`,
+        url: `${version}/employees/${existingEmployee.EmployeeId}?children=directs`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
         method: 'GET',
       }).then(response => {
-        cy.wrap(response).its('body').should('have.property', 'departments');
+        cy.wrap(response).its('body').should('have.property', 'directs');
         cy.wrap(response)
           .its('body')
-          .its('LocationId')
-          .should('equal', existingLocation.LocationId);
+          .its('EmployeeId')
+          .should('equal', existingEmployee.EmployeeId);
         cy.wrap(response)
           .its('body')
-          .its('StreetAddress')
-          .should('equal', existingLocation.StreetAddress);
+          .its('Email')
+          .should('equal', existingEmployee.Email);
         cy.wrap(response)
-          .its('body.departments.0')
-          .its('LocationId')
-          .should('equal', existingLocation.LocationId);
+          .its('body.directs.0')
+          .its('ManagerId')
+          .should('equal', existingEmployee.EmployeeId);
         cy.wrap(response)
-          .its('body.departments.0')
-          .its('DepartmentId')
-          .should('equal', existingDepartment.DepartmentId);
+          .its('body.directs.0')
+          .its('EmployeeId')
+          .should('equal', existingDirect.EmployeeId);
         cy.wrap(response)
-          .its('body.departments.0')
-          .its('DepartmentName')
-          .should('equal', existingDepartment.DepartmentName);
+          .its('body.directs.0')
+          .its('Email')
+          .should('equal', existingDirect.Email);
       });
     });
 
-    it('should update the new location', () => {
-      const newStreetAddress = 'New StreetAddress';
+    it('should update the new employee', () => {
+      const newFirstName = 'New FirstName';
+      const newLastName = 'New LastName';
       cy.request({
-        url: `${version}/locations/${newLocation.LocationId}`,
+        url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
         method: 'PATCH',
         body: {
-          StreetAddress: newStreetAddress,
+          FirstName: newFirstName,
+          LastName: newLastName,
         },
       }).then(response => {
         cy.wrap(response).its('status').should('equal', 200);
-        cy.wrap(response)
-          .its('body.StreetAddress')
-          .should('equal', newStreetAddress);
+        cy.wrap(response).its('body.FirstName').should('equal', newFirstName);
+        cy.wrap(response).its('body.LastName').should('equal', newLastName);
       });
     });
 
-    it('should delete the new location', () => {
+    it('should delete the new employee', () => {
       cy.request({
-        url: `${version}/locations/${newLocation.LocationId}`,
+        url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -138,8 +135,8 @@ context('LOCATION API', () => {
       }).then(response => {
         cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
-          .its('body.LocationId')
-          .should('equal', newLocation.LocationId);
+          .its('body.EmployeeId')
+          .should('equal', newEmployee.EmployeeId);
       });
     });
 
@@ -166,25 +163,25 @@ context('LOCATION API', () => {
         token = response.body.token;
       });
     });
-    it('should create a new location', () => {
+    it('should create a new employee', () => {
       cy.request({
-        url: `${version}/locations`,
+        url: `${version}/employees`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
         method: 'POST',
-        body: newLocation,
+        body: newEmployee,
       }).then(response => {
         cy.wrap(response).its('status').should('equal', 201);
         cy.wrap(response)
-          .its('body.LocationId')
-          .should('equal', newLocation.LocationId);
+          .its('body.EmployeeId')
+          .should('equal', newEmployee.EmployeeId);
       });
     });
 
-    it('should fetch the new location', () => {
+    it('should fetch the new employee', () => {
       cy.request({
-        url: `${version}/locations/${newLocation.LocationId}`,
+        url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -192,33 +189,34 @@ context('LOCATION API', () => {
       }).then(response => {
         cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
-          .its('body.LocationId')
-          .should('equal', newLocation.LocationId);
+          .its('body.EmployeeId')
+          .should('equal', newEmployee.EmployeeId);
       });
     });
 
-    it('should update the new location', () => {
-      const newStreetAddress = 'New StreetAddress';
+    it('should update the new employee', () => {
+      const newFirstName = 'New FirstName';
+      const newLastName = 'New LastName';
       cy.request({
-        url: `${version}/locations/${newLocation.LocationId}`,
+        url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
         method: 'PATCH',
         body: {
-          StreetAddress: newStreetAddress,
+          FirstName: newFirstName,
+          LastName: newLastName,
         },
       }).then(response => {
         cy.wrap(response).its('status').should('equal', 200);
-        cy.wrap(response)
-          .its('body.StreetAddress')
-          .should('equal', newStreetAddress);
+        cy.wrap(response).its('body.FirstName').should('equal', newFirstName);
+        cy.wrap(response).its('body.LastName').should('equal', newLastName);
       });
     });
 
-    it('should not be able to delete the new location', () => {
+    it('should not be able to delete the new employee', () => {
       cy.request({
-        url: `${version}/locations/${newLocation.LocationId}`,
+        url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -254,23 +252,23 @@ context('LOCATION API', () => {
         token = response.body.token;
       });
     });
-    it('should not be able to create a new location', () => {
+    it('should not be able to create a new employee', () => {
       cy.request({
-        url: `${version}/locations`,
+        url: `${version}/employees`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
         method: 'POST',
-        body: newLocation,
+        body: newEmployee,
         failOnStatusCode: false,
       })
         .its('status')
         .should('equal', 401);
     });
 
-    it('should fetch an existing location', () => {
+    it('should fetch an existing employee', () => {
       cy.request({
-        url: `${version}/locations/${existingLocation.LocationId}`,
+        url: `${version}/employees/${existingEmployee.EmployeeId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -278,21 +276,23 @@ context('LOCATION API', () => {
       }).then(response => {
         cy.wrap(response).its('status').should('equal', 200);
         cy.wrap(response)
-          .its('body.LocationId')
-          .should('equal', existingLocation.LocationId);
+          .its('body.EmployeeId')
+          .should('equal', existingEmployee.EmployeeId);
       });
     });
 
-    it('should not be able to update an existing location', () => {
-      const newStreetAddress = 'New StreetAddress';
+    it('should not be able to update an existing employee', () => {
+      const newFirstName = 'New FirstName';
+      const newLastName = 'New LastName';
       cy.request({
-        url: `${version}/locations/${existingLocation.LocationId}`,
+        url: `${version}/employees/${newEmployee.EmployeeId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
         method: 'PATCH',
         body: {
-          StreetAddress: newStreetAddress,
+          FirstName: newFirstName,
+          LastName: newLastName,
         },
         failOnStatusCode: false,
       })
@@ -300,9 +300,9 @@ context('LOCATION API', () => {
         .should('equal', 401);
     });
 
-    it('should not be able to delete an existing location', () => {
+    it('should not be able to delete an existing employee', () => {
       cy.request({
-        url: `${version}/locations/${existingLocation.LocationId}`,
+        url: `${version}/employees/${existingEmployee.EmployeeId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
