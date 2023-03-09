@@ -14,8 +14,8 @@ https://github.com/anirbmuk/hr-store.git
 - - - -
 
 ## Cloud deployment
-JET - https://menj-stack.herokuapp.com  
-Node & Express - https://menj-server.herokuapp.com  
+JET - ~https://menj-stack.herokuapp.com~ (Heroku decomissioned)  
+Node & Express - ~https://menj-server.herokuapp.com~ (Heroku decomissioned)   
 Mongo - Cloud atlas  
 
 - - - -
