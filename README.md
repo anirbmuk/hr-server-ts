@@ -14,8 +14,8 @@ https://github.com/anirbmuk/hr-store.git
 - - - -
 
 ## Cloud deployment
-JET - ~https://menj-stack.herokuapp.com~ (Heroku decomissioned)  
-Node & Express - ~https://menj-server.herokuapp.com~ (Heroku decomissioned)   
+JET - ~https://menj-stack.herokuapp.com~ (Heroku decommissioned)  
+Node & Express - ~https://menj-server.herokuapp.com~ (Heroku decommissioned)   
 Mongo - Cloud atlas  
 
 - - - -
@@ -23,9 +23,10 @@ Mongo - Cloud atlas
 ## Technical mumbo-jumbo
 What I wanted     | What I got
 ----------------- | --------------
-IDE               | MS Visual Studio Code
-Front-end         | Oracle JET (7.2.0)
-Database          | MongoDB
-Middleware        | Node, Express
-MW Hosting        | Heroku
-App Hosting       | Heroku
+IDE               | MS Visual Studio Code  
+Front-end         | Oracle JET (7.2.0)  
+Database          | MongoDB  
+Middleware        | Node, Express  
+E2E               | Cypress  
+MW Hosting        | ~Heroku~  
+App Hosting       | ~Heroku~  
