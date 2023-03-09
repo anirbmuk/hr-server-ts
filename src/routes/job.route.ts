@@ -1,4 +1,5 @@
 import { Router, RequestHandler } from 'express';
+import { SortOrder } from 'mongoose';
 import guard from './../handlers/guard.mw';
 import { Job } from './../models';
 
@@ -6,12 +7,12 @@ const router = Router();
 
 const getJobs: RequestHandler = async (req, res) => {
   const sortBy = req.query.sortBy as string;
-  const sortOptions: Record<string, number> = {};
+  const sortOptions: Record<string, SortOrder> = {};
   if (sortBy) {
     const options = sortBy.split(',');
     for (const option of options) {
       const keys = option.split(':');
-      sortOptions[keys[0]] = +keys[1];
+      sortOptions[keys[0] as string] = keys[1] as SortOrder;
     }
   }
   try {

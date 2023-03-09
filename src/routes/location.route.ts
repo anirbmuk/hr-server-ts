@@ -2,6 +2,7 @@ import { Router, RequestHandler } from 'express';
 import guard from './../handlers/guard.mw';
 import { HrFilter } from '../types/type';
 import { Location, ILocation } from './../models';
+import { SortOrder } from 'mongoose';
 
 const sortAttributes: Record<string, Record<string, number>> = {
   departments: { DepartmentId: 1 },
@@ -12,7 +13,7 @@ const router = Router();
 const getLocations: RequestHandler = async (req, res) => {
   const sortBy = req.query.sortBy as string;
   const filter = req.query.filter as string;
-  const sortOptions: Record<string, number> = {};
+  const sortOptions: Record<string, SortOrder> = {};
   const orConditions = [];
   let locationQuery;
   let locationCountQuery;
@@ -21,7 +22,7 @@ const getLocations: RequestHandler = async (req, res) => {
     const options = sortBy.split(',');
     for (const option of options) {
       const keys = option.split(':');
-      sortOptions[keys[0]] = +keys[1];
+      sortOptions[keys[0] as string] = keys[1] as SortOrder;
     }
   }
   if (filter) {
@@ -152,7 +153,7 @@ const deleteLocation: RequestHandler<{ id: string }> = async (req, res) => {
       return res.status(404).send({ items: [] });
     }
     // await Department.deleteMany({ LocationId: location.LocationId });
-    await location.remove();
+    await location.deleteOne();
     res.status(200).send(location);
   } catch (error: unknown) {
     res.status(500).send({ error: (error as Error).message });

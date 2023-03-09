@@ -1,4 +1,5 @@
 import { Router, RequestHandler } from 'express';
+import { SortOrder } from 'mongoose';
 import { HrFilter } from '../types/type';
 import guard from './../handlers/guard.mw';
 import { Department, IDepartment } from './../models';
@@ -12,7 +13,7 @@ const sortAttributes: Record<string, Record<string, number>> = {
 const getDepartments: RequestHandler = async (req, res) => {
   const sortBy = req.query.sortBy as string;
   const filter = req.query.filter as string;
-  const sortOptions: Record<string, number> = {};
+  const sortOptions: Record<string, SortOrder> = {};
   const orConditions = [];
   let departmentQuery;
   let departmentCountQuery;
@@ -20,7 +21,7 @@ const getDepartments: RequestHandler = async (req, res) => {
     const options = sortBy.split(',');
     for (const option of options) {
       const keys = option.split(':');
-      sortOptions[keys[0]] = +keys[1];
+      sortOptions[keys[0] as string] = keys[1] as SortOrder;
     }
   }
   if (filter) {
@@ -149,7 +150,7 @@ const deleteDepartment: RequestHandler<{ id: string }> = async (req, res) => {
       return res.status(404).send();
     }
     // await Employee.deleteMany({ DepartmentId: department.DepartmentId });
-    await department.remove();
+    await department.deleteOne();
     res.status(200).send(department);
   } catch (error: unknown) {
     res.status(500).send({ error: (error as Error).message });

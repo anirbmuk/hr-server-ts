@@ -21,7 +21,7 @@ const deleteUser: RequestHandler<{ email: string }> = async (req, res) => {
     if (!user) {
       return res.status(404).send();
     }
-    await user.remove();
+    await user.deleteOne();
     res.status(200).send(user);
   } catch (error: unknown) {
     res.status(500).send({ error: (error as Error).message });
