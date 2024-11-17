@@ -4,7 +4,7 @@ Node.js server and middleware for Oracle HR schema (TypeScript)
 - - - -
 
 ## Related blog
-https://jetsolutions.anirbanblogs.com/2020/03/jet-with-mongodb-nodejs-and-express.html  
+https://thejetsolutions.blogspot.com/2020/03/jet-with-mongodb-nodejs-and-express.html  
 
 - - - -
 
